@@ -24,11 +24,11 @@ function setDefaultStr(val, replaceWith) {
 
 /**
  * Convert special character into html entities
- * @param {string} text
+ * @param {string} str
  * @returns {string}
  */
-function encodeStr(text) {
-  return text.replace(/[&<>"'\/]/g, (char) => {
+function encodeStr(str) {
+  return str.replace(/[&<>"'\/]/g, (char) => {
     return {
       "&": "&amp;",
       "<": "&lt;",
@@ -43,7 +43,7 @@ function encodeStr(text) {
 /**
  * Extract color from image
  * @param {<img />} imageElement
- * @returns {string} // hexcode
+ * @returns {string}  hexcode
  */
 async function extractColor(imageElement) {
   const canvas = document.createElement("canvas");
@@ -76,5 +76,16 @@ async function extractColor(imageElement) {
   g = Math.floor(g / count);
   b = Math.floor(b / count);
 
-  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  let isDark = brightness <= 125;
+
+  return {
+    color: {
+      rgb: `rgb(${r}, ${g}, ${b})`,
+      hexcode: `#${((1 << 24) + (r << 16) + (g << 8) + b)
+        .toString(16)
+        .slice(1)}`.toUpperCase(),
+    },
+    isDark: isDark,
+  };
 }
