@@ -8,3 +8,11 @@ function dd($item = 'hello world')
     echo "</pre>";
     die;
 }
+
+function printResult($obj, $attributes)
+{
+    foreach ($attributes as $attribute) {
+        echo "<div>" . $attribute . ": "  . $obj->$attribute . "</div>";
+    }
+    echo "<br>";
+}
